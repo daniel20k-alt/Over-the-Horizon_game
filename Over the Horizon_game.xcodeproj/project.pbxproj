@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		EE3F279E2534F93E0016378C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3F279D2534F93E0016378C /* AppDelegate.swift */; };
 		EE3F27A02534F93F0016378C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = EE3F279F2534F93F0016378C /* GameScene.sks */; };
-		EE3F27A22534F93F0016378C /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27A12534F93F0016378C /* Actions.sks */; };
 		EE3F27A42534F93F0016378C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3F27A32534F93F0016378C /* GameScene.swift */; };
 		EE3F27A62534F93F0016378C /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3F27A52534F93F0016378C /* GameViewController.swift */; };
 		EE3F27A92534F93F0016378C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27A72534F93F0016378C /* Main.storyboard */; };
@@ -20,7 +19,6 @@
 		EE3F279A2534F93E0016378C /* Over the Horizon_game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Over the Horizon_game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE3F279D2534F93E0016378C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EE3F279F2534F93F0016378C /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		EE3F27A12534F93F0016378C /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		EE3F27A32534F93F0016378C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		EE3F27A52534F93F0016378C /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		EE3F27A82534F93F0016378C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -60,7 +58,6 @@
 			children = (
 				EE3F279D2534F93E0016378C /* AppDelegate.swift */,
 				EE3F279F2534F93F0016378C /* GameScene.sks */,
-				EE3F27A12534F93F0016378C /* Actions.sks */,
 				EE3F27A32534F93F0016378C /* GameScene.swift */,
 				EE3F27A52534F93F0016378C /* GameViewController.swift */,
 				EE3F27A72534F93F0016378C /* Main.storyboard */,
@@ -130,7 +127,6 @@
 				EE3F27A92534F93F0016378C /* Main.storyboard in Resources */,
 				EE3F27A02534F93F0016378C /* GameScene.sks in Resources */,
 				EE3F27AB2534F9450016378C /* Assets.xcassets in Resources */,
-				EE3F27A22534F93F0016378C /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +288,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.MeerkatWorks.Over-the-Horizon-game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -311,7 +307,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.MeerkatWorks.Over-the-Horizon-game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
