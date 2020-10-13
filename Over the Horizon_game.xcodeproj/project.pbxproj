@@ -13,6 +13,11 @@
 		EE3F27A62534F93F0016378C /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3F27A52534F93F0016378C /* GameViewController.swift */; };
 		EE3F27A92534F93F0016378C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27A72534F93F0016378C /* Main.storyboard */; };
 		EE3F27AB2534F9450016378C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27AA2534F9450016378C /* Assets.xcassets */; };
+		EE3F27B82535CD5C0016378C /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27B62535CD5C0016378C /* spark.png */; };
+		EE3F27B92535CD5C0016378C /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27B72535CD5C0016378C /* explosion.wav */; };
+		EE3F27BC2535CD6B0016378C /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27BB2535CD6B0016378C /* coin.wav */; };
+		EE3F27C02535CD730016378C /* PlayerExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27BE2535CD720016378C /* PlayerExplosion.sks */; };
+		EE3F27C12535CD730016378C /* music.m4a in Resources */ = {isa = PBXBuildFile; fileRef = EE3F27BF2535CD730016378C /* music.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,11 @@
 		EE3F27A82534F93F0016378C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EE3F27AA2534F9450016378C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE3F27AC2534F9450016378C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE3F27B62535CD5C0016378C /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = "../../../../HackingWithSwift-Downloads/Classic/project36-files/spark.png"; sourceTree = "<group>"; };
+		EE3F27B72535CD5C0016378C /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = explosion.wav; path = "../../../../HackingWithSwift-Downloads/Classic/project36-files/explosion.wav"; sourceTree = "<group>"; };
+		EE3F27BB2535CD6B0016378C /* coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = coin.wav; path = "../../../../HackingWithSwift-Downloads/Classic/project36-files/coin.wav"; sourceTree = "<group>"; };
+		EE3F27BE2535CD720016378C /* PlayerExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = PlayerExplosion.sks; path = "../../../../HackingWithSwift-Downloads/Classic/project36-files/PlayerExplosion.sks"; sourceTree = "<group>"; };
+		EE3F27BF2535CD730016378C /* music.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = music.m4a; path = "../../../../HackingWithSwift-Downloads/Classic/project36-files/music.m4a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				EE3F279C2534F93E0016378C /* Over the Horizon_game */,
+				EE3F27B52535CD0A0016378C /* Content */,
 				EE3F279B2534F93E0016378C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +76,18 @@
 				EE3F27AC2534F9450016378C /* Info.plist */,
 			);
 			path = "Over the Horizon_game";
+			sourceTree = "<group>";
+		};
+		EE3F27B52535CD0A0016378C /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				EE3F27B72535CD5C0016378C /* explosion.wav */,
+				EE3F27B62535CD5C0016378C /* spark.png */,
+				EE3F27BB2535CD6B0016378C /* coin.wav */,
+				EE3F27BF2535CD730016378C /* music.m4a */,
+				EE3F27BE2535CD720016378C /* PlayerExplosion.sks */,
+			);
+			path = Content;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,7 +147,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE3F27B92535CD5C0016378C /* explosion.wav in Resources */,
 				EE3F27A92534F93F0016378C /* Main.storyboard in Resources */,
+				EE3F27C12535CD730016378C /* music.m4a in Resources */,
+				EE3F27B82535CD5C0016378C /* spark.png in Resources */,
+				EE3F27BC2535CD6B0016378C /* coin.wav in Resources */,
+				EE3F27C02535CD730016378C /* PlayerExplosion.sks in Resources */,
 				EE3F27A02534F93F0016378C /* GameScene.sks in Resources */,
 				EE3F27AB2534F9450016378C /* Assets.xcassets in Resources */,
 			);
