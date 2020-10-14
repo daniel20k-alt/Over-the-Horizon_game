@@ -15,6 +15,7 @@ class GameScene: SKScene {
         
         createPlayer()
         createSky()
+        createBackground()
         
     }
     
@@ -40,7 +41,7 @@ class GameScene: SKScene {
     }
     
    func createSky() {
-//        let topSky = SKSpriteNode(color: UIColor(hue: 0.66, saturation: 0.14, brightness: 0.97, alpha: 1))
+
     let topSky = SKSpriteNode(color: UIColor(hue: 0.55, saturation: 0.14, brightness: 0.97, alpha: 1), size: CGSize(width: frame.width, height: frame.height * 0.67))
     topSky.anchorPoint = CGPoint(x: 0.5, y: 1)
     
@@ -55,5 +56,28 @@ class GameScene: SKScene {
     
     topSky.zPosition = -40
     bottomSky.zPosition = -40
+    }
+    
+    
+    func createBackground() {
+        let backgroundTexture = SKTexture(imageNamed: "background")
+        
+        for i in 0...1 {
+            let background = SKSpriteNode(texture: backgroundTexture)
+            background.zPosition = -30 //placing it in front of the Sky
+            background.anchorPoint = CGPoint.zero
+            background.position = CGPoint(x: (backgroundTexture.size().width * CGFloat(i)) - CGFloat(1 * i), y: 100) // calculating the X position of each mountain (inside loop from 0 to  1. First loop => x = 0, second loop => x = texture - 1, and this helps avoiding tiny little gaps in the mountains)
+            addChild(background)
+            
+            
+            //making the background run indefinetely
+            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 20)
+            let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
+            let moveLoop = SKAction.sequence([moveLeft, moveReset])
+            let moveForever = SKAction.repeatForever(moveLoop)
+            
+            background.run(moveForever)
+            
+        }
     }
 }
