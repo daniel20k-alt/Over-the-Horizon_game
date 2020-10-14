@@ -16,6 +16,7 @@ class GameScene: SKScene {
         createPlayer()
         createSky()
         createBackground()
+        createGround()
         
     }
     
@@ -54,10 +55,10 @@ class GameScene: SKScene {
     addChild(topSky)
     addChild(bottomSky)
     
-    topSky.zPosition = -40
     bottomSky.zPosition = -40
-    }
-    
+    topSky.zPosition = -40
+
+   }
     
     func createBackground() {
         let backgroundTexture = SKTexture(imageNamed: "background")
@@ -71,13 +72,37 @@ class GameScene: SKScene {
             
             
             //making the background run indefinetely
-            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 20)
+            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 5)
             let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
             let moveLoop = SKAction.sequence([moveLeft, moveReset])
             let moveForever = SKAction.repeatForever(moveLoop)
             
             background.run(moveForever)
-            
+        }
+    }
+    
+    
+    func createGround() {
+        let groundTexture = SKTexture(imageNamed: "ground")
+        
+
+        for i in 0 ... 1 {
+            let ground = SKSpriteNode(texture: groundTexture)
+
+            ground.zPosition = -10
+
+            ground.anchorPoint = CGPoint(x: 0.5, y: 0.05)
+           //pozitionarea la ground
+            ground.position = CGPoint(x: (groundTexture.size().width / 2 + (groundTexture.size().width * CGFloat(i))), y: groundTexture.size().height / 1)
+
+            addChild(ground)
+
+            let moveLeft = SKAction.moveBy(x: -groundTexture.size().width, y: 0, duration: 5)
+            let moveReset = SKAction.moveBy(x: groundTexture.size().width, y: 0, duration: 0)
+            let moveLoop = SKAction.sequence([moveLeft, moveReset])
+            let moveForever = SKAction.repeatForever(moveLoop)
+
+            ground.run(moveForever)
         }
     }
 }
