@@ -18,8 +18,28 @@ class GameScene: SKScene {
         createBackground()
         createGround()
         startRocks()
+        createScore()
       
     }
+    
+    var scoreLabel: SKLabelNode!
+    var score = 0 {
+        didSet {
+            scoreLabel.text = "SCORE: \(score)"
+        }
+    }
+    
+    func createScore() {
+        scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
+        scoreLabel.fontSize = 25
+        
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 60)
+        scoreLabel.text = "SCORE: 0"
+        scoreLabel.fontColor = UIColor.black
+        
+        addChild(scoreLabel)
+    }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
