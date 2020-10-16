@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player: SKSpriteNode!
     
@@ -19,6 +19,9 @@ class GameScene: SKScene {
         createGround()
         startRocks()
         createScore()
+        
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
+        physicsWorld.contactDelegate = self
       
     }
     
@@ -33,7 +36,7 @@ class GameScene: SKScene {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
         scoreLabel.fontSize = 25
         
-        scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 60)
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 80)
         scoreLabel.text = "SCORE: 0"
         scoreLabel.fontColor = UIColor.black
         
@@ -42,6 +45,9 @@ class GameScene: SKScene {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+        player.physicsBody?.applyAngularImpulse(CGVector(dx: 0, dy: 20))
         
     }
     
@@ -52,6 +58,12 @@ class GameScene: SKScene {
         player.position = CGPoint(x: frame.width / 6, y: frame.height * 0.75)
         
         addChild(player)
+        
+        player.physicsBody = SKPhysicsBody(texture: playerTexture, size: playerTexture.size()) //setting the exact pixel physics
+        player.physicsBody!.contactTestBitMask = player.physicsBody!.collisionBitMask //tell when player collides with anything, since the player dies when touching anything, but doesn't bounce
+        player.physicsBody?.isDynamic = true
+        
+//        player.physicsBody?.collisionBitMask = 0 //player bounces off in air
         
         let frame2 = SKTexture(imageNamed: "player-2")
         let frame3 = SKTexture(imageNamed: "player-3")
@@ -116,6 +128,9 @@ class GameScene: SKScene {
            //pozitionarea la ground
             ground.position = CGPoint(x: (groundTexture.size().width / 2 + (groundTexture.size().width * CGFloat(i))), y: groundTexture.size().height / 1)
 
+            ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
+            ground.physicsBody?.isDynamic = false //player htis the ground
+            
             addChild(ground)
 
             let moveLeft = SKAction.moveBy(x: -groundTexture.size().width, y: 0, duration: 5)
