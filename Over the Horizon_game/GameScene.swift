@@ -79,9 +79,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         //skipping any collision if either of the nodes become nil
-        guard contact.bodyA.node != nil && contact.bodyB.node != nil else {
+    guard contact.bodyA.node != nil && contact.bodyB.node != nil else {
             return
         }
+        
+        
+        //configuring the ending
+        if contact.bodyA.node == player || contact.bodyB.node == player {
+            if let explosion = SKEmitterNode(fileNamed: "PlayerExplosion") {
+                explosion.position = player.position
+                addChild(explosion)
+        }
+            
+            let sound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
+            run(sound)
+            
+            player.removeFromParent()
+            speed = 0 //1.0 real time, 2.0 doubling the action speed
+    }
     }
     
     
