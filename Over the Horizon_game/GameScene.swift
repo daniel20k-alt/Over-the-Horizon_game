@@ -46,9 +46,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        player.physicsBody?.applyAngularImpulse(CGVector(dx: 0, dy: 20))
+        player.physicsBody?.velocity = CGVector(dx: 0, dy: 0) // neutralize any existing upward velocity before applying the push
+        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20)) //apply a push every time the screen is tapped
         
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        let value = player.physicsBody!.velocity.dy * 0.001 //tilting the player when moving up or down a little bit
+        let rotate = SKAction.rotate(toAngle: value, duration: 0.1)
+        
+        player.run(rotate)
     }
     
     func createPlayer() {
@@ -63,7 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody!.contactTestBitMask = player.physicsBody!.collisionBitMask //tell when player collides with anything, since the player dies when touching anything, but doesn't bounce
         player.physicsBody?.isDynamic = true
         
-//        player.physicsBody?.collisionBitMask = 0 //player bounces off in air
+        player.physicsBody?.collisionBitMask = 0 //player bounces off in air
         
         let frame2 = SKTexture(imageNamed: "player-2")
         let frame3 = SKTexture(imageNamed: "player-3")
