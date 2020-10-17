@@ -58,6 +58,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.run(rotate)
     }
     
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        //checking whhich of them collided with whom
+        if contact.bodyA.node?.name == "scoreDetect" || contact.bodyB.node?.name == "scoreDetect" {
+            if contact.bodyA.node == player {
+                contact.bodyB.node?.removeFromParent()
+            } else {
+                contact.bodyA.node?.removeFromParent()
+            }
+            
+            let sound = SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false)
+            run(sound)
+            
+            //triggering the didSet property
+            score += 1
+            
+            //if the player hits something else - do not continue this method
+            return
+        }
+        
+        //skipping any collision if either of the nodes become nil
+        guard contact.bodyA.node != nil && contact.bodyB.node != nil else {
+            return
+        }
+    }
+    
+    
     func createPlayer() {
         let playerTexture = SKTexture(imageNamed: "player-1")
         player = SKSpriteNode(texture: playerTexture)
@@ -170,7 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         topRock.zPosition = -20
         bottomRock.zPosition = -20
         
-        //creating 3rd sprite positioned after the impact object, which will record points once passed
+        //creating 3rd sprite positioned after the impact object, which will record points once passed`
         let rockCollision = SKSpriteNode(color: UIColor.red, size: CGSize(width: 32, height: frame.height))
         rockCollision.name = "scoreDetect"
         
