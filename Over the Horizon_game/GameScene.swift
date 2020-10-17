@@ -156,17 +156,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      let rockTexture = SKTexture(imageNamed: "rock")
         
         let topRock = SKSpriteNode(texture: rockTexture)
+        
+        topRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+        topRock.physicsBody?.isDynamic = false //ensuring the rocks wont fall off screen
+        
         topRock.zRotation = .pi
         topRock.xScale = -1.0 //inverting the sprite
         
         let bottomRock = SKSpriteNode(texture: rockTexture)
         
+        bottomRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+        bottomRock.physicsBody?.isDynamic = false //ensuring it wont fall off
         topRock.zPosition = -20
         bottomRock.zPosition = -20
         
         //creating 3rd sprite positioned after the impact object, which will record points once passed
         let rockCollision = SKSpriteNode(color: UIColor.red, size: CGSize(width: 32, height: frame.height))
         rockCollision.name = "scoreDetect"
+        
+        rockCollision.physicsBody = SKPhysicsBody(rectangleOf: rockCollision.size)
+        rockCollision.physicsBody?.isDynamic = false
+        
         
         addChild(topRock)
         addChild(bottomRock)
