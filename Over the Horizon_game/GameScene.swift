@@ -90,12 +90,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20)) //apply a push every time the screen is tapped
             
         case .dead:
-            break
+//            break //resetting the game once the player has crashed and tapped the screen
+            if let scene = GameScene(fileNamed: "GameScene") { //creating a fresh GameScene scene
+                scene.scaleMode = .aspectFill
+                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
+                view?.presentScene(scene, transition: transition)
+            }
         }
         
     }
     
     override func update(_ currentTime: TimeInterval) {
+        
+        guard player != nil else { return } //ensure that the player is not nil, otherwise exit the method
+        
         let value = player.physicsBody!.velocity.dy * 0.001 //tilting the player when moving up or down a little bit
         let rotate = SKAction.rotate(toAngle: value, duration: 0.1)
         
@@ -138,6 +146,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let sound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
             run(sound)
             
+            //configuring the ending of the game when the player crashes
+            gameOver.alpha = 1
+            gameState = .dead
+            backgroundMusic.run(SKAction.stop())
             player.removeFromParent()
             speed = 0 //1.0 real time, 2.0 doubling the action speed
     }
