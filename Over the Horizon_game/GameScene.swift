@@ -7,11 +7,23 @@
 
 import SpriteKit
 
+enum GameState {
+    case showingLogo
+    case playing
+    case dead
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player: SKSpriteNode!
     
     var backgroundMusic: SKAudioNode!
+    
+    //configuring the showLogo
+    var logo: SKSpriteNode!
+    var gameOver: SKSpriteNode!
+    
+    var gameState = GameState.showingLogo
     
     override func didMove(to view: SKView) {
         
@@ -19,8 +31,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createSky()
         createBackground()
         createGround()
-        startRocks()
+//        startRocks()  //commenting out so it wont start creating rocks before starting the game, also configuring player.physicsBody.isDynamic = false so player is suspended
         createScore()
+        createLogos()
         
         //configuring physics gravity for player
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
@@ -31,8 +44,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             backgroundMusic = SKAudioNode(url: musicURL)
             addChild(backgroundMusic)
         }
-        
-      
     }
     
     //configuring the score
@@ -57,8 +68,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        player.physicsBody?.velocity = CGVector(dx: 0, dy: 0) // neutralize any existing upward velocity before applying the push
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20)) //apply a push every time the screen is tapped
+        //configuring the game for when the player presses "New Game"
+        switch gameState {
+        case .showingLogo:
+        gameState = .playing
+        
+        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+        let remove = SKAction.removeFromParent()
+        let wait = SKAction.wait(forDuration: 0.5)
+        let activatePlayer = SKAction.run {
+             [unowned self] in
+            self.player.physicsBody?.isDynamic = true
+            self.startRocks()
+        }
+        
+                let sequence = SKAction.sequence([fadeOut, wait, activatePlayer, remove])
+                logo.run(sequence)
+        
+        case .playing:
+            player.physicsBody?.velocity = CGVector(dx: 0, dy: 0) // neutralize any existing upward velocity before applying the push
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20)) //apply a push every time the screen is tapped
+            
+        case .dead:
+            break
+        }
         
     }
     
@@ -121,7 +154,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player.physicsBody = SKPhysicsBody(texture: playerTexture, size: playerTexture.size()) //setting the exact pixel physics
         player.physicsBody!.contactTestBitMask = player.physicsBody!.collisionBitMask //tell when player collides with anything, since the player dies when touching anything, but doesn't bounce
-        player.physicsBody?.isDynamic = true
+//        player.physicsBody?.isDynamic = true //commented for starting game in another mode
+        player.physicsBody?.isDynamic = false
         
         player.physicsBody?.collisionBitMask = 0 //player bounces off in air
         
@@ -271,4 +305,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         run(repeatForever)
         
     }
+    
+    //creating the logos
+    func createLogos() {
+        logo = SKSpriteNode(imageNamed: "logo")
+        logo.position = CGPoint(x: frame.midX, y: frame.midY)
+        addChild(logo)
+        
+        gameOver = SKSpriteNode(imageNamed: "gameover")
+        gameOver.position = CGPoint(x: frame.midX, y: frame.midY)
+        gameOver.alpha = 0
+        addChild(gameOver)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
