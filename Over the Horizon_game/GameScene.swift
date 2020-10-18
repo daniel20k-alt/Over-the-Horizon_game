@@ -270,7 +270,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bottomRock.zPosition = -20
         
         //creating 3rd sprite positioned after the impact object, which will record points once passed`
-        let rockCollision = SKSpriteNode(color: UIColor.red, size: CGSize(width: 32, height: frame.height))
+        let rockCollision = SKSpriteNode(color: UIColor.clear, size: CGSize(width: 32, height: frame.height)) //changing from .red to .clear color
         rockCollision.name = "scoreDetect"
         
         rockCollision.physicsBody = SKPhysicsBody(rectangleOf: rockCollision.size)
