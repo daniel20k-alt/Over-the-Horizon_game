@@ -11,6 +11,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player: SKSpriteNode!
     
+    var backgroundMusic: SKAudioNode!
+    
     override func didMove(to view: SKView) {
         
         createPlayer()
@@ -20,11 +22,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         startRocks()
         createScore()
         
+        //configuring physics gravity for player
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
         physicsWorld.contactDelegate = self
+        
+        //configuring music
+        if let musicURL = Bundle.main.url(forResource: "music", withExtension: "m4a") {
+            backgroundMusic = SKAudioNode(url: musicURL)
+            addChild(backgroundMusic)
+        }
+        
       
     }
     
+    //configuring the score
     var scoreLabel: SKLabelNode!
     var score = 0 {
         didSet {
