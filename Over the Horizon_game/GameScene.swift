@@ -25,6 +25,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var gameState = GameState.showingLogo
     
+    
+    //configuring the pixel-perfect collision for rocks
+    let rockTexture = SKTexture(imageNamed: "rock") //store rock texture
+    var rockPhysics: SKPhysicsBody! //store rock physics body
+    
+    //solving the delay when the player crashes by forcing SpriteKit to preload the texture and keep it in memory
+    let explosion = SKEmitterNode(fileNamed: "PlayerExplosion")
+
+    
     override func didMove(to view: SKView) {
         
         createPlayer()
@@ -44,6 +53,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             backgroundMusic = SKAudioNode(url: musicURL)
             addChild(backgroundMusic)
         }
+        
+        //creating an SKPhysicsBody from the rock texture
+        rockPhysics = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
     }
     
     //configuring the score
@@ -256,7 +268,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let topRock = SKSpriteNode(texture: rockTexture)
         
-        topRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+//        topRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+        topRock.physicsBody = rockPhysics.copy() as? SKPhysicsBody
         topRock.physicsBody?.isDynamic = false //ensuring the rocks wont fall off screen
         
         topRock.zRotation = .pi
@@ -264,7 +277,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let bottomRock = SKSpriteNode(texture: rockTexture)
         
-        bottomRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+//        bottomRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+        bottomRock.physicsBody = rockPhysics.copy() as? SKPhysicsBody
         bottomRock.physicsBody?.isDynamic = false //ensuring it wont fall off
         topRock.zPosition = -20
         bottomRock.zPosition = -20
