@@ -23,16 +23,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var logo: SKSpriteNode!
     var gameOver: SKSpriteNode!
     
-    var gameState = GameState.showingLogo
+    var gameState = GameState.showingLogo //initial gameState
     
     
     //configuring the pixel-perfect collision for rocks
     let rockTexture = SKTexture(imageNamed: "rock") //store rock texture
     var rockPhysics: SKPhysicsBody! //store rock physics body
     
-    //solving the delay when the player crashes by forcing SpriteKit to preload the texture and keep it in memory
-    let explosion = SKEmitterNode(fileNamed: "PlayerExplosion")
-
+    let explosion = SKEmitterNode(fileNamed: "PlayerExplosion")    //solving the delay when the player crashes by forcing SpriteKit to preload the texture and keep it in memory
+    
     
     override func didMove(to view: SKView) {
         
@@ -40,7 +39,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createSky()
         createBackground()
         createGround()
-//        startRocks()  //commenting out so it wont start creating rocks before starting the game, also configuring player.physicsBody.isDynamic = false so player is suspended
+        //        startRocks()  //commenting out so it wont start creating rocks before starting the game, also configuring player.physicsBody.isDynamic = false so player is suspended
         createScore()
         createLogos()
         
@@ -57,6 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //creating an SKPhysicsBody from the rock texture
         rockPhysics = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
     }
+    
     
     //configuring the score
     var scoreLabel: SKLabelNode!
@@ -83,38 +83,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //configuring the game for when the player presses "New Game"
         switch gameState {
         case .showingLogo:
-        gameState = .playing
-        
-        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
-        let remove = SKAction.removeFromParent()
-        let wait = SKAction.wait(forDuration: 0.5)
-        let activatePlayer = SKAction.run {
-             [unowned self] in
-            self.player.physicsBody?.isDynamic = true
-            self.startRocks()
-        }
-        
-                let sequence = SKAction.sequence([fadeOut, wait, activatePlayer, remove])
-                logo.run(sequence)
-        
+            gameState = .playing
+            
+            let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+            let remove = SKAction.removeFromParent()
+            let wait = SKAction.wait(forDuration: 0.5)
+            let activatePlayer = SKAction.run {
+                [unowned self] in
+                self.player.physicsBody?.isDynamic = true
+                self.startRocks()
+            }
+            
+            let sequence = SKAction.sequence([fadeOut, wait, activatePlayer, remove])
+            logo.run(sequence)
+            
         case .playing:
             player.physicsBody?.velocity = CGVector(dx: 0, dy: 0) // neutralize any existing upward velocity before applying the push
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20)) //apply a push every time the screen is tapped
-            
+        
         case .dead:
-//            break //resetting the game once the player has crashed and tapped the screen
+            //            break //resetting the game once the player has crashed and tapped the screen
             if let scene = GameScene(fileNamed: "GameScene") { //creating a fresh GameScene scene
                 scene.scaleMode = .aspectFill
                 let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
                 view?.presentScene(scene, transition: transition)
             }
         }
-        
     }
     
     override func update(_ currentTime: TimeInterval) {
         
-        guard player != nil else { return } //ensure that the player is not nil, otherwise exit the method
+        guard player != nil else { return } //ensure that the player is not nil, otherwise exit the method, needed when restarting the game
         
         let value = player.physicsBody!.velocity.dy * 0.001 //tilting the player when moving up or down a little bit
         let rotate = SKAction.rotate(toAngle: value, duration: 0.1)
@@ -143,7 +142,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         //skipping any collision if either of the nodes become nil
-    guard contact.bodyA.node != nil && contact.bodyB.node != nil else {
+        guard contact.bodyA.node != nil && contact.bodyB.node != nil else {
             return
         }
         
@@ -153,7 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if let explosion = SKEmitterNode(fileNamed: "PlayerExplosion") {
                 explosion.position = player.position
                 addChild(explosion)
-        }
+            }
             
             let sound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
             run(sound)
@@ -164,7 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             backgroundMusic.run(SKAction.stop())
             player.removeFromParent()
             speed = 0 //1.0 real time, 2.0 doubling the action speed
-    }
+        }
     }
     
     
@@ -178,7 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player.physicsBody = SKPhysicsBody(texture: playerTexture, size: playerTexture.size()) //setting the exact pixel physics
         player.physicsBody!.contactTestBitMask = player.physicsBody!.collisionBitMask //tell when player collides with anything, since the player dies when touching anything, but doesn't bounce
-//        player.physicsBody?.isDynamic = true //commented for starting game in another mode
+        //        player.physicsBody?.isDynamic = true //commented for starting game in another mode
         player.physicsBody?.isDynamic = false
         
         player.physicsBody?.collisionBitMask = 0 //player bounces off in air
@@ -192,24 +191,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.run(runForever)
     }
     
-   func createSky() {
-
-    let topSky = SKSpriteNode(color: UIColor(hue: 0.55, saturation: 0.14, brightness: 0.97, alpha: 1), size: CGSize(width: frame.width, height: frame.height * 0.67))
-    topSky.anchorPoint = CGPoint(x: 0.5, y: 1)
-    
-    let bottomSky = SKSpriteNode(color: UIColor(hue: 0.55, saturation: 0.16, brightness: 0.96, alpha: 1), size: CGSize(width: frame.width, height: frame.height * 0.33))
-    bottomSky.anchorPoint = CGPoint(x: 0.5, y: 1)
-    
-    topSky.position = CGPoint(x: frame.midX, y: frame.height)
-    bottomSky.position = CGPoint(x: frame.midX, y: bottomSky.frame.height)
-    
-    addChild(topSky)
-    addChild(bottomSky)
-    
-    bottomSky.zPosition = -40
-    topSky.zPosition = -40
-
-   }
+    func createSky() {
+        
+        let topSky = SKSpriteNode(color: UIColor(hue: 0.55, saturation: 0.14, brightness: 0.97, alpha: 1), size: CGSize(width: frame.width, height: frame.height * 0.67))
+        topSky.anchorPoint = CGPoint(x: 0.5, y: 1)
+        
+        let bottomSky = SKSpriteNode(color: UIColor(hue: 0.55, saturation: 0.16, brightness: 0.96, alpha: 1), size: CGSize(width: frame.width, height: frame.height * 0.33))
+        bottomSky.anchorPoint = CGPoint(x: 0.5, y: 1)
+        
+        topSky.position = CGPoint(x: frame.midX, y: frame.height)
+        bottomSky.position = CGPoint(x: frame.midX, y: bottomSky.frame.height)
+        
+        addChild(topSky)
+        addChild(bottomSky)
+        
+        bottomSky.zPosition = -40
+        topSky.zPosition = -40
+        
+    }
     
     func createBackground() {
         let backgroundTexture = SKTexture(imageNamed: "background")
@@ -220,7 +219,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             background.anchorPoint = CGPoint.zero
             background.position = CGPoint(x: (backgroundTexture.size().width * CGFloat(i)) - CGFloat(1 * i), y: 100) // calculating the X position of each mountain (inside loop from 0 to  1. First loop => x = 0, second loop => x = texture - 1, and this helps avoiding tiny little gaps in the mountains)
             addChild(background)
-            
             
             //making the background run indefinetely
             let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 5)
@@ -236,26 +234,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createGround() {
         let groundTexture = SKTexture(imageNamed: "ground")
         
-
         for i in 0 ... 1 {
             let ground = SKSpriteNode(texture: groundTexture)
-
+            
             ground.zPosition = -10
-
+            
             ground.anchorPoint = CGPoint(x: 0.5, y: 0.05) //0.1
-           //pozitionarea la ground
+            //pozitionarea la ground
             ground.position = CGPoint(x: (groundTexture.size().width / 2 + (groundTexture.size().width * CGFloat(i))), y: groundTexture.size().height / 1)
-
+            
             ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
             ground.physicsBody?.isDynamic = false //player htis the ground
             
             addChild(ground)
-
+            
             let moveLeft = SKAction.moveBy(x: -groundTexture.size().width, y: 0, duration: 5)
             let moveReset = SKAction.moveBy(x: groundTexture.size().width, y: 0, duration: 0)
             let moveLoop = SKAction.sequence([moveLeft, moveReset])
             let moveForever = SKAction.repeatForever(moveLoop)
-
+            
             ground.run(moveForever)
         }
     }
@@ -264,11 +261,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createRocks() {
         //creating top and bottom impact objects sprites
         
-     let rockTexture = SKTexture(imageNamed: "rock")
+        let rockTexture = SKTexture(imageNamed: "rock")
         
         let topRock = SKSpriteNode(texture: rockTexture)
         
-//        topRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+        //        topRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
         topRock.physicsBody = rockPhysics.copy() as? SKPhysicsBody
         topRock.physicsBody?.isDynamic = false //ensuring the rocks wont fall off screen
         
@@ -277,7 +274,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let bottomRock = SKSpriteNode(texture: rockTexture)
         
-//        bottomRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
+        //        bottomRock.physicsBody = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
         bottomRock.physicsBody = rockPhysics.copy() as? SKPhysicsBody
         bottomRock.physicsBody?.isDynamic = false //ensuring it wont fall off
         topRock.zPosition = -20
@@ -318,9 +315,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
     func startRocks() {
         let create = SKAction.run {
-             [unowned self] in
+            [unowned self] in
             self.createRocks()
         }
         
@@ -331,6 +329,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         run(repeatForever)
         
     }
+    
     
     //creating the logos
     func createLogos() {
@@ -343,15 +342,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameOver.alpha = 0
         addChild(gameOver)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
