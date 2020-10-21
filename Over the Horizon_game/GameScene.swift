@@ -30,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let rockTexture = SKTexture(imageNamed: "rock") //store rock texture
     var rockPhysics: SKPhysicsBody! //store rock physics body
     
-    let explosion = SKEmitterNode(fileNamed: "PlayerExplosion")    //solving the delay when the player crashes by forcing SpriteKit to preload the texture and keep it in memory
+    let explosion = SKEmitterNode(fileNamed: "PlayerExplosion") //solving the delay when the player crashes by forcing SpriteKit to preload the texture and keep it in memory
     
     
     override func didMove(to view: SKView) {
@@ -44,8 +44,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createLogos()
         
         //configuring physics gravity for player
-        physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
-        physicsWorld.contactDelegate = self
+//        physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
+        setPhysicsGravity()
+
         
         //configuring music
         if let musicURL = Bundle.main.url(forResource: "music", withExtension: "m4a") {
@@ -57,6 +58,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rockPhysics = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
     }
     
+    func setPhysicsGravity() {
+  
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: (-5.0 - Double(score * 500)))
+        physicsWorld.contactDelegate = self
+
+    }
     
     //configuring the score
     var scoreLabel: SKLabelNode!
