@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-enum GameState {
+enum GameState { //the states of the game
     case showingLogo
     case playing
     case dead
@@ -25,12 +25,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var gameState = GameState.showingLogo //initial gameState
     
-    
-    //configuring the pixel-perfect collision for rocks
+    //  configuring the pixel-perfect collision for rocks
     let rockTexture = SKTexture(imageNamed: "rock") //store rock texture
     var rockPhysics: SKPhysicsBody! //store rock physics body
     
-    let explosion = SKEmitterNode(fileNamed: "PlayerExplosion") //solving the delay when the player crashes by forcing SpriteKit to preload the texture and keep it in memory
+    let explosion = SKEmitterNode(fileNamed: "PlayerExplosion") //solving the delay when the player crashes by forcing SpriteKit to preload the texture at initialization and keep it in memory
     
     
     override func didMove(to view: SKView) {
@@ -39,37 +38,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createSky()
         createBackground()
         createGround()
-        //        startRocks()  //commenting out so it wont start creating rocks before starting the game, also configuring player.physicsBody.isDynamic = false so player is suspended
+        //        startRocks()  //commenting out so it wont start creating rocks before starting the game, also configuring player.physicsBody.isDynamic = false so player is suspended until start
         createScore()
         createLogos()
         
-        //configuring physics gravity for player
-//        physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
-        setPhysicsGravity()
+        //static physics gravity for player
+//        setPhysicsGravity()
 
-        
         //configuring music
         if let musicURL = Bundle.main.url(forResource: "music", withExtension: "m4a") {
             backgroundMusic = SKAudioNode(url: musicURL)
             addChild(backgroundMusic)
         }
         
-        //creating an SKPhysicsBody from the rock texture
+        //creating an SKPhysicsBody from the rock texture, so it can be preloaded later
         rockPhysics = SKPhysicsBody(texture: rockTexture, size: rockTexture.size())
     }
     
     func setPhysicsGravity() {
-  
-        physicsWorld.gravity = CGVector(dx: 0.0, dy: (-5.0 - Double(score * 500)))
-        physicsWorld.contactDelegate = self
 
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: (-5.0 - Double(score))) //making the gravity harder as the player advances by each point
+        physicsWorld.contactDelegate = self
     }
     
     //configuring the score
     var scoreLabel: SKLabelNode!
+
     var score = 0 {
         didSet {
             scoreLabel.text = "SCORE: \(score)"
+            print(score)
         }
     }
     
@@ -109,7 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20)) //apply a push every time the screen is tapped
         
         case .dead:
-            //            break //resetting the game once the player has crashed and tapped the screen
+            // break //resetting the game once the player has crashed and tapped the screen
             if let scene = GameScene(fileNamed: "GameScene") { //creating a fresh GameScene scene
                 scene.scaleMode = .aspectFill
                 let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
@@ -121,11 +119,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         
         guard player != nil else { return } //ensure that the player is not nil, otherwise exit the method, needed when restarting the game
-        
         let value = player.physicsBody!.velocity.dy * 0.001 //tilting the player when moving up or down a little bit
         let rotate = SKAction.rotate(toAngle: value, duration: 0.1)
         
         player.run(rotate)
+        
+        setPhysicsGravity() //updating the gravity based on score
     }
     
     
@@ -152,7 +151,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         guard contact.bodyA.node != nil && contact.bodyB.node != nil else {
             return
         }
-        
         
         //configuring the ending
         if contact.bodyA.node == player || contact.bodyB.node == player {
@@ -334,9 +332,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let repeatForever = SKAction.repeatForever(sequence)
         
         run(repeatForever)
-        
     }
-    
     
     //creating the logos
     func createLogos() {
