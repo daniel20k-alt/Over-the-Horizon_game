@@ -20,7 +20,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var backgroundMusic: SKAudioNode!
     
     //configuring the showLogo
-    var logo: SKSpriteNode!
+    var logoOne: SKSpriteNode!
+    var logoTwo: SKSpriteNode!
+    
     var gameOver: SKSpriteNode!
     
     var gameState = GameState.showingLogo //initial gameState
@@ -100,7 +102,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
             let sequence = SKAction.sequence([fadeOut, wait, activatePlayer, remove])
-            logo.run(sequence)
+           
+            logoOne.run(sequence)
+            logoTwo.run(sequence)
             
         case .playing:
             player.physicsBody?.velocity = CGVector(dx: 0, dy: 0) // neutralize any existing upward velocity before applying the push
@@ -173,7 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func createPlayer() {
-        let playerTexture = SKTexture(imageNamed: "player-1")
+        let playerTexture = SKTexture(imageNamed: "player1-1")
         player = SKSpriteNode(texture: playerTexture)
         player.zPosition = 10
         player.position = CGPoint(x: frame.width / 6, y: frame.height * 0.75)
@@ -187,8 +191,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player.physicsBody?.collisionBitMask = 0 //player bounces off in air
         
-        let frame2 = SKTexture(imageNamed: "player-2")
-        let frame3 = SKTexture(imageNamed: "player-3")
+        let frame2 = SKTexture(imageNamed: "player1-2")
+        let frame3 = SKTexture(imageNamed: "player1-3")
         
         let animation = SKAction.animate(with: [playerTexture, frame2, frame3, frame2], timePerFrame: 0.01)
         let runForever = SKAction.repeatForever(animation)
@@ -336,13 +340,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //creating the logos
     func createLogos() {
-        logo = SKSpriteNode(imageNamed: "logo")
-        logo.position = CGPoint(x: frame.midX, y: frame.midY)
-        addChild(logo)
+//        logo = SKSpriteNode(imageNamed: "logo")
+//        logo.position = CGPoint(x: frame.midX, y: frame.midY)
+//        addChild(logo)
         
         gameOver = SKSpriteNode(imageNamed: "gameover")
         gameOver.position = CGPoint(x: frame.midX, y: frame.midY)
         gameOver.alpha = 0
         addChild(gameOver)
+        
+        //player 1
+        let player1Texture = SKTexture(imageNamed: "player1-1")
+        logoOne = SKSpriteNode(texture: player1Texture)
+//        logoOne.zPosition = 10
+        logoOne.position = CGPoint(x: frame.midX - 100, y: frame.midY)
+        
+        logoOne.physicsBody = SKPhysicsBody(texture: player1Texture, size: player1Texture.size()) //setting the exact pixel physics
+       
+        logoOne.physicsBody?.isDynamic = false
+        
+//        player.physicsBody?.collisionBitMask = 0 //player bounces off in air
+//
+        let frame2 = SKTexture(imageNamed: "player1-2")
+        let frame3 = SKTexture(imageNamed: "player1-3")
+        
+        let animation = SKAction.animate(with: [player1Texture, frame2, frame3, frame2], timePerFrame: 0.01)
+        let runForever = SKAction.repeatForever(animation)
+        
+        logoOne.run(runForever)
+        addChild(logoOne)
+    
+        //player 2
+        let player2Texture = SKTexture(imageNamed: "player2-1")
+        logoTwo = SKSpriteNode(texture: player2Texture)
+//        logoTwo.zPosition = 10
+        logoTwo.position = CGPoint(x: frame.midX, y: frame.midY)
+        
+        logoTwo.physicsBody = SKPhysicsBody(texture: player2Texture, size: player2Texture.size()) //setting the exact pixel physics
+       
+        logoTwo.physicsBody?.isDynamic = false
+        
+//        player.physicsBody?.collisionBitMask = 0 //player bounces off in air
+//
+        let frame4 = SKTexture(imageNamed: "player2-2")
+        let frame5 = SKTexture(imageNamed: "player2-3")
+        
+        let animation2 = SKAction.animate(with: [player2Texture, frame4, frame5, frame4], timePerFrame: 0.01)
+        let runForever2 = SKAction.repeatForever(animation2)
+        
+        logoTwo.run(runForever2)
+        addChild(logoTwo)
     }
 }
